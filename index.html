@@ -631,7 +631,7 @@ async function saveData() {
         FIRING: document.getElementById('editFiring').value,
         MEDICAL: document.getElementById('editMedical').value,
         BLOOD: document.getElementById('editBlood').value,
-        VOTERID: document.getElementById('editVoterId').value.trim() || 'VOT' + Math.floor(Math.random()*9000000+1000000)
+        VOTERID: document.getElementById('editVoterId').value.trim()  // ✅ ખાલી રહેવા દો
     };
 
     showStatus('⏳ Google Sheets માં સેવ થઈ રહ્યું છે...', 'loading');
@@ -652,7 +652,6 @@ async function saveData() {
         const result = await response.json();
         
         if (result.success) {
-            // લોકલ ડેટા અપડેટ કરો
             const person = peopleData.find(p => String(p.ID) === String(currentId));
             if (person) {
                 Object.assign(person, updates);
@@ -668,8 +667,7 @@ async function saveData() {
     } catch (error) {
         showStatus('❌ નેટવર્ક ભૂલ: ' + error.message, 'error');
     }
-}
-// ========== EDIT FUNCTIONS ==========
+}// ========== EDIT FUNCTIONS ==========
 function enableEdit() {
     if (!currentId) {
         showStatus('❌ કૃપા કરીને પહેલા બકલ નંબર પસંદ કરો!', 'error');
