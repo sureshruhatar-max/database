@@ -696,39 +696,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 document.getElementById('uniqueNo').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') loadData();
 });
-// ========== શોધ બટન ==========
-function searchById() {
-    const searchValue = document.getElementById('searchInput').value.trim();
-    
-    if (!searchValue) {
-        showStatus('❌ કૃપા કરીને બકલ નંબર નાખો!', 'error');
-        return;
-    }
-    
-    // ID શોધો
-    const person = peopleData.find(p => String(p.ID) === String(searchValue));
-    
-    if (!person) {
-        showStatus('❌ બકલ નંબર ' + searchValue + ' મળ્યો નહીં!', 'error');
-        return;
-    }
-    
-    // ડ્રૉપડાઉનમાં સેટ કરો
-    document.getElementById('uniqueNo').value = person.ID;
-    currentId = person.ID;
-    
-    // ડેટા દેખાડો
-    displayPerson(person);
-    
-    // સ્ટેટસ
-    document.getElementById('syncStatus').innerHTML = '✅ બકલ નંબર ' + searchValue + ' નો ડેટા મળ્યો!';
-}
-
-// Enter કી દબાવો તો શોધાય
-document.getElementById('searchInput').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        searchById();
-    }
-});</script>
+</script>
 </body>
 </html>
