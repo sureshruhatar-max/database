@@ -301,18 +301,18 @@ h1 {
 <body>
 
 <div class="container">
-    <h1>📋 ડેટાબેઝ - 100 લોકો</h1>
+    <h1> B કંપની </h1>
 
     <div class="sync-status" id="syncStatus">🔄 Google Sheets સાથે કનેક્ટ થઈ રહ્યું છે...</div>
 
-    <div class="select-section">
-        <label for="uniqueNo">🔢 બકલ નંબર:</label>
-        <select id="uniqueNo" onchange="loadData()">
-            <option value="">-- પસંદ કરો --</option>
-        </select>
-        <button class="btn btn-primary" onclick="loadData()">📥 શોધો</button>
-        <button class="btn btn-secondary" onclick="refreshData()">🔄 રિફ્રેશ</button>
+    <!-- શોધ બોક્સ -->
+<div class="search-box" style="margin-top: 10px; width: 100%;">
+    <label for="searchInput" style="font-weight: bold; font-size: 16px; display: block; margin-bottom: 5px;">🔍 શોધો (બકલ નંબર):</label>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <input type="number" id="searchInput" placeholder="બકલ નંબર નાખો..." style="flex: 1; padding: 12px; border: 2px solid #667eea; border-radius: 10px; font-size: 16px; min-width: 150px;">
+        <button class="btn btn-primary" onclick="searchById()">🔍 શોધો</button>
     </div>
+</div>
 
     <div class="details" id="detailsDisplay">
         <div class="detail-item"><span class="detail-label">🔢 બકલ નંબર:</span><span class="detail-value" id="displayId">-</span></div>
@@ -696,6 +696,39 @@ document.addEventListener('DOMContentLoaded', async function() {
 document.getElementById('uniqueNo').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') loadData();
 });
-</script>
+// ========== શોધ બટન ==========
+function searchById() {
+    const searchValue = document.getElementById('searchInput').value.trim();
+    
+    if (!searchValue) {
+        showStatus('❌ કૃપા કરીને બકલ નંબર નાખો!', 'error');
+        return;
+    }
+    
+    // ID શોધો
+    const person = peopleData.find(p => String(p.ID) === String(searchValue));
+    
+    if (!person) {
+        showStatus('❌ બકલ નંબર ' + searchValue + ' મળ્યો નહીં!', 'error');
+        return;
+    }
+    
+    // ડ્રૉપડાઉનમાં સેટ કરો
+    document.getElementById('uniqueNo').value = person.ID;
+    currentId = person.ID;
+    
+    // ડેટા દેખાડો
+    displayPerson(person);
+    
+    // સ્ટેટસ
+    document.getElementById('syncStatus').innerHTML = '✅ બકલ નંબર ' + searchValue + ' નો ડેટા મળ્યો!';
+}
+
+// Enter કી દબાવો તો શોધાય
+document.getElementById('searchInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        searchById();
+    }
+});</script>
 </body>
 </html>
