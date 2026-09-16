@@ -3,499 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B કંપની</title>
+    <title>ડેટાબેઝ - શોધ</title>
     <style>
-       * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-}
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-.container {
-    background: white;
-    border-radius: 20px;
-    padding: 30px;
-    max-width: 750px;
-    width: 100%;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-}
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
 
-h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-    font-size: 24px;
-}
+        .search-section {
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .search-section label {
+            display: block;
+            font-weight: bold;
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        .search-section .search-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .search-section input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 3px solid #667eea;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            min-width: 200px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .search-section input:focus {
+            outline: none;
+            border-color: #5a67d8;
+            box-shadow: 0 0 0 4px rgba(102,126,234,0.2);
+        }
+        .search-section .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5a67d8; transform: translateY(-2px); }
+        .btn-secondary { background: #718096; color: white; }
+        .btn-secondary:hover { background: #4a5568; transform: translateY(-2px); }
 
-.select-section {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
-}
+        .status {
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 15px;
+            font-weight: bold;
+            display: none;
+        }
+        .status.success { display: block; background: #c6f6d5; color: #22543d; }
+        .status.error { display: block; background: #fed7d7; color: #742a2a; }
+        .status.info { display: block; background: #bee3f8; color: #2a69ac; }
 
-.select-section label {
-    font-weight: bold;
-    font-size: 18px;
-    color: #2d3748;
-}
+        /* ========== ડિટેલ કાર્ડ ========== */
+        .detail-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .detail-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-top: 8px solid #667eea;
+            animation: slideDown 0.4s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.select-section select {
-    flex: 1;
-    padding: 12px;
-    border: 2px solid #667eea;
-    border-radius: 10px;
-    font-size: 16px;
-    background: #f8f9ff;
-    min-width: 200px;
-    color: #2d3748;
-}
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #f0f0f0;
+            margin-bottom: 25px;
+        }
+        .detail-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 34px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .detail-header-info {
+            flex: 1;
+        }
+        .detail-header-info h2 {
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+        .detail-header-info .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .badge {
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            color: white;
+        }
+        .badge-rank { background: #667eea; }
+        .badge-id { background: #ed8936; }
 
-.btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .detail-field {
+            background: #f7fafc;
+            padding: 14px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        .detail-field .field-label {
+            font-size: 12px;
+            color: #718096;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .detail-field .field-value {
+            font-size: 16px;
+            color: #2d3748;
+            font-weight: 600;
+            word-break: break-word;
+        }
+        .detail-field.full {
+            grid-column: 1 / -1;
+        }
 
-.btn-primary { background: #667eea; color: white; }
-.btn-primary:hover { background: #5a67d8; transform: scale(1.05); }
-.btn-warning { background: #ed8936; color: white; }
-.btn-warning:hover { background: #dd6b20; transform: scale(1.05); }
-.btn-success { background: #48bb78; color: white; }
-.btn-success:hover { background: #38a169; transform: scale(1.05); }
-.btn-danger { background: #fc8181; color: white; }
-.btn-danger:hover { background: #e53e3e; transform: scale(1.05); }
-.btn-secondary { background: #718096; color: white; }
-.btn-secondary:hover { background: #4a5568; transform: scale(1.05); }
+        .detail-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            flex-wrap: wrap;
+        }
+        .detail-actions button {
+            flex: 1;
+            min-width: 140px;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-warning { background: #ed8936; color: white; }
+        .btn-warning:hover { background: #dd6b20; transform: translateY(-2px); }
+        .btn-success { background: #48bb78; color: white; }
+        .btn-success:hover { background: #38a169; transform: translateY(-2px); }
 
-.details {
-    background: #f7fafc;
-    padding: 20px;
-    border-radius: 15px;
-    margin: 20px 0;
-    max-height: 500px;
-    overflow-y: auto;
-}
+        .empty-state {
+            text-align: center;
+            color: white;
+            padding: 60px 20px;
+        }
+        .empty-state .icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+        }
+        .empty-state h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .empty-state p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
 
-.detail-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid #e2e8f0;
-}
+        /* ========== એડિટ ફોર્મ ========== */
+        .edit-form {
+            display: none;
+        }
+        .edit-form.active {
+            display: block;
+        }
+        .edit-form .form-group {
+            margin-bottom: 15px;
+        }
+        .edit-form label {
+            display: block;
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .edit-form input,
+        .edit-form select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        .edit-form input:focus,
+        .edit-form select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .edit-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
 
-.detail-item:last-child { border-bottom: none; }
-
-.detail-label {
-    font-weight: bold;
-    color: #4a5568;
-    flex: 1;
-}
-
-.detail-value {
-    color: #2d3748;
-    flex: 1;
-    text-align: right;
-    font-weight: 500;
-}
-
-.btn-group {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin: 15px 0;
-}
-
-.edit-section {
-    display: none;
-    background: #edf2f7;
-    padding: 20px;
-    border-radius: 15px;
-    margin-top: 20px;
-    max-height: 600px;
-    overflow-y: auto;
-}
-
-.edit-section.active { display: block; }
-
-.edit-section h3 {
-    color: #2d3748;
-    margin-bottom: 10px;
-}
-
-.edit-section label {
-    font-weight: bold;
-    color: #2d3748;
-    display: block;
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-.edit-section input,
-.edit-section select {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0 10px 0;
-    border: 2px solid #cbd5e0;
-    border-radius: 8px;
-    font-size: 14px;
-    background: white;
-}
-
-.edit-section input:focus,
-.edit-section select:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.status {
-    padding: 10px;
-    border-radius: 8px;
-    margin: 10px 0;
-    display: none;
-}
-
-.status.success { display: block; background: #c6f6d5; color: #22543d; }
-.status.error { display: block; background: #fed7d7; color: #742a2a; }
-.status.loading { display: block; background: #bee3f8; color: #2a69ac; }
-
-.sync-status {
-    text-align: center;
-    font-size: 14px;
-    color: #718096;
-    margin: 10px 0;
-    padding: 8px;
-    background: #f7fafc;
-    border-radius: 8px;
-}
-
-/* ========== મોબાઇલ ડિઝાઇન ========== */
-@media (max-width: 600px) {
-    body {
-        padding: 10px;
-        align-items: flex-start;
-    }
-    .container {
-        padding: 15px;
-        border-radius: 15px;
-    }
-    h1 {
-        font-size: 20px;
-        margin-bottom: 15px;
-    }
-    .sync-status {
-        font-size: 12px;
-        padding: 8px;
-    }
-    .select-section {
-        flex-direction: column;
-        gap: 8px;
-        margin-bottom: 15px;
-    }
-    .select-section label {
-        font-size: 16px;
-        width: 100%;
-    }
-    .select-section select {
-        width: 100%;
-        padding: 14px;
-        font-size: 16px;
-        min-width: auto;
-    }
-    .btn {
-        width: 100%;
-        padding: 14px;
-        font-size: 16px;
-        margin-bottom: 5px;
-    }
-    .btn-group {
-        flex-direction: column;
-        gap: 8px;
-        margin: 10px 0;
-    }
-    .details {
-        padding: 15px;
-        max-height: 400px;
-        margin: 15px 0;
-    }
-    .detail-item {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px 0;
-    }
-    .detail-label {
-        font-size: 13px;
-        color: #718096;
-        margin-bottom: 3px;
-    }
-    .detail-value {
-        font-size: 16px;
-        font-weight: 600;
-        text-align: left;
-        width: 100%;
-        color: #2d3748;
-    }
-    .edit-section {
-        padding: 15px;
-        max-height: 500px;
-    }
-    .edit-section h3 {
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
-    .edit-section label {
-        font-size: 14px;
-        margin-top: 8px;
-    }
-    .edit-section input,
-    .edit-section select {
-        padding: 14px;
-        font-size: 16px;
-        margin: 3px 0 8px 0;
-    }
-    .status {
-        font-size: 14px;
-        padding: 12px;
-    }
-}
-
-/* ========== સ્ક્રોલ બાર સુંદર બનાવો ========== */
-.details::-webkit-scrollbar,
-.edit-section::-webkit-scrollbar {
-    width: 6px;
-}
-.details::-webkit-scrollbar-track,
-.edit-section::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-.details::-webkit-scrollbar-thumb,
-.edit-section::-webkit-scrollbar-thumb {
-    background: #667eea;
-    border-radius: 10px;
-}
-
-/* ========== ટચ ફ્રેન્ડલી ========== */
-@media (hover: none) {
-    .btn:hover {
-        transform: none;
-    }
-    .btn:active {
-        transform: scale(0.98);
-    }
-}
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .header h1 { font-size: 22px; }
+            .search-section { padding: 20px; }
+            .search-section label { font-size: 16px; }
+            .search-section input { font-size: 16px; padding: 12px; }
+            .search-section .btn { width: 100%; font-size: 16px; padding: 12px; }
+            .detail-card { padding: 20px; }
+            .detail-header { flex-direction: column; text-align: center; }
+            .detail-header-info .badges { justify-content: center; }
+            .detail-avatar { width: 70px; height: 70px; font-size: 28px; }
+            .detail-header-info h2 { font-size: 20px; }
+            .detail-grid { grid-template-columns: 1fr; }
+            .detail-field .field-value { font-size: 15px; }
+            .edit-form .form-row { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1> B કંપની </h1>
-
-    <div class="sync-status" id="syncStatus">🔄 Google Sheets સાથે કનેક્ટ થઈ રહ્યું છે...</div>
+    <!-- Header -->
+    <div class="header">
+        <h1>📋 ડેટાબેઝ</h1>
+    </div>
 
     <!-- શોધ બોક્સ -->
-<div class="search-box" style="margin-top: 10px; width: 100%;">
-    <label for="searchInput" style="font-weight: bold; font-size: 16px; display: block; margin-bottom: 5px;">🔍 શોધો (બકલ નંબર):</label>
-    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <input type="number" id="searchInput" placeholder="બકલ નંબર નાખો..." style="flex: 1; padding: 12px; border: 2px solid #667eea; border-radius: 10px; font-size: 16px; min-width: 150px;">
-        <button class="btn btn-primary" onclick="searchById()">🔍 શોધો</button>
-    </div>
-</div>
-
-    <div class="details" id="detailsDisplay">
-        <div class="detail-item"><span class="detail-label">🔢 બકલ નંબર:</span><span class="detail-value" id="displayId">-</span></div>
-        <div class="detail-item"><span class="detail-label">👤 હોદ્દો:</span><span class="detail-value" id="displayRank">-</span></div>
-        <div class="detail-item"><span class="detail-label">👤 નામ:</span><span class="detail-value" id="displayName">-</span></div>
-        <div class="detail-item"><span class="detail-label">📏 ઊંચાઈ (cm):</span><span class="detail-value" id="displayHeight">-</span></div>
-        <div class="detail-item"><span class="detail-label">⚖️ વજન (kg):</span><span class="detail-value" id="displayWeight">-</span></div>
-        <div class="detail-item"><span class="detail-label">🎂 જન્મ તારીખ:</span><span class="detail-value" id="displayDob">-</span></div>
-        <div class="detail-item"><span class="detail-label">👞 કટ બૂટ:</span><span class="detail-value" id="displayCutBoot">-</span></div>
-        <div class="detail-item"><span class="detail-label">🥾 હોલ બૂટ:</span><span class="detail-value" id="displayHoleBoot">-</span></div>
-        <div class="detail-item"><span class="detail-label">👟 પીટી શૂઝ:</span><span class="detail-value" id="displayPtShoe">-</span></div>
-        <div class="detail-item"><span class="detail-label">🌿 જંગલ શૂઝ:</span><span class="detail-value" id="displayJungleShoe">-</span></div>
-        <div class="detail-item"><span class="detail-label">👕 ટી-શર્ટ:</span><span class="detail-value" id="displayTShirt">-</span></div>
-        <div class="detail-item"><span class="detail-label">👖 લોઅર સાઈઝ:</span><span class="detail-value" id="displayLowerSize">-</span></div>
-        <div class="detail-item"><span class="detail-label">🎖️ બેરેટ કેપ:</span><span class="detail-value" id="displayBeret">-</span></div>
-        <div class="detail-item"><span class="detail-label">🧥 રેઈનકોટ:</span><span class="detail-value" id="displayRaincoat">-</span></div>
-        <div class="detail-item"><span class="detail-label">🧥 ગરમ કોટ:</span><span class="detail-value" id="displayWarmCoat">-</span></div>
-        <div class="detail-item"><span class="detail-label">🧣 ગરમ જરશી:</span><span class="detail-value" id="displayWarmJacket">-</span></div>
-        <div class="detail-item"><span class="detail-label">🔫 ફાયરીંગ:</span><span class="detail-value" id="displayFiring">-</span></div>
-        <div class="detail-item"><span class="detail-label">🏥 મેડીકલ:</span><span class="detail-value" id="displayMedical">-</span></div>
-        <div class="detail-item"><span class="detail-label">🩸 બ્લડ ગ્રુપ:</span><span class="detail-value" id="displayBlood">-</span></div>
-        <div class="detail-item"><span class="detail-label">🪪 ચૂંટણી કાર્ડ:</span><span class="detail-value" id="displayVoterId">-</span></div>
-    </div>
-
-    <div class="btn-group">
-        <button class="btn btn-warning" onclick="enableEdit()">✏️ અપડેટ કરો</button>
-    </div>
-
-    <div class="edit-section" id="editSection">
-        <h3>✏️ ડેટા અપડેટ કરો</h3>
-
-        <label>👤 હોદ્દો:</label>
-        <select id="editRank">
-            <option value="PI">PI</option>
-            <option value="PSI">PSI</option>
-            <option value="ASI">ASI</option>
-            <option value="APC">APC</option>
-        </select>
-
-        <label>👤 નામ:</label>
-        <input type="text" id="editName">
-
-        <label>📏 ઊંચાઈ (cm):</label>
-        <select id="editHeight"></select>
-
-        <label>⚖️ વજન (kg):</label>
-        <select id="editWeight"></select>
-
-        <label>🎂 જન્મ તારીખ:</label>
-        <input type="date" id="editDob">
-
-        <label>👞 કટ બૂટ:</label>
-        <select id="editCutBoot"></select>
-
-        <label>🥾 હોલ બૂટ:</label>
-        <select id="editHoleBoot"></select>
-
-        <label>👟 પીટી શૂઝ:</label>
-        <select id="editPtShoe"></select>
-
-        <label>🌿 જંગલ શૂઝ:</label>
-        <select id="editJungleShoe"></select>
-
-        <label>👕 ટી-શર્ટ:</label>
-        <select id="editTShirt">
-            <option value="S">S</option><option value="M">M</option>
-            <option value="L">L</option><option value="XL">XL</option>
-            <option value="XXL">XXL</option>
-        </select>
-
-        <label>👖 લોઅર સાઈઝ:</label>
-        <select id="editLowerSize"></select>
-
-        <label>🎖️ બેરેટ કેપ:</label>
-        <select id="editBeret"></select>
-
-        <label>🧥 રેઈનકોટ:</label>
-        <select id="editRaincoat">
-            <option value="S">S</option><option value="M">M</option>
-            <option value="L">L</option><option value="XL">XL</option>
-            <option value="XXL">XXL</option>
-        </select>
-
-        <label>🧥 ગરમ કોટ:</label>
-        <select id="editWarmCoat">
-            <option value="S">S</option><option value="M">M</option>
-            <option value="L">L</option><option value="XL">XL</option>
-            <option value="XXL">XXL</option>
-        </select>
-
-        <label>🧣 ગરમ જરશી:</label>
-        <select id="editWarmJacket">
-            <option value="S">S</option><option value="M">M</option>
-            <option value="L">L</option><option value="XL">XL</option>
-            <option value="XXL">XXL</option>
-        </select>
-
-        <label>🔫 ફાયરીંગ થયું?</label>
-        <select id="editFiring">
-            <option value="હા">હા</option><option value="ના">ના</option>
-        </select>
-
-        <label>🏥 મેડીકલ થયું?</label>
-        <select id="editMedical">
-            <option value="હા">હા</option><option value="ના">ના</option>
-        </select>
-
-        <label>🩸 બ્લડ ગ્રુપ:</label>
-        <select id="editBlood">
-            <option value="A+">A+</option><option value="A-">A-</option>
-            <option value="B+">B+</option><option value="B-">B-</option>
-            <option value="AB+">AB+</option><option value="AB-">AB-</option>
-            <option value="O+">O+</option><option value="O-">O-</option>
-        </select>
-
-        <label>🪪 ચૂંટણી કાર્ડ નંબર:</label>
-        <input type="text" id="editVoterId" placeholder="દા.ત. ABC1234567">
-
-        <div class="btn-group">
-            <button class="btn btn-success" onclick="saveData()">💾 સેવ કરો</button>
-            <button class="btn btn-danger" onclick="cancelEdit()">❌ રદ્દ કરો</button>
+    <div class="search-section">
+        <label for="searchInput">🔢 બકલ નંબર નાખો:</label>
+        <div class="search-row">
+            <input type="number" id="searchInput" placeholder="દા.ત. 1" autofocus>
+            <button class="btn btn-primary" onclick="searchPerson()">🔍 શોધો</button>
+            <button class="btn btn-secondary" onclick="resetSearch()">🔄 રીસેટ</button>
         </div>
-        <div id="statusMessage" class="status"></div>
+        <div class="status" id="statusMsg"></div>
     </div>
-</div>
+
+    <!-- ડિટેલ વ્યૂ -->
+    <div class="detail-container" id="detailContainer">
+        <div class="empty-state">
+            <div class="icon">🔍</div>
+            <h3>બકલ નંબર નાખો</h3>
+            <p>ઉપર બોક્સમાં બકલ નંબર નાખીને શોધો બટન દબાવો</p>
+        </div>
+    </div>
 
 <script>
 // ========== CONFIGURATION ==========
-// 🔴 અહીં તમારી નવી Web App URL મૂકો:
-const API_URL = 'https://script.google.com/macros/s/AKfycbyzjxMWcib0e9i2aB-fM5QtLr3aUzmeVMWfXAHZc5-7xJVaFmRUzXxmeddNCQWM-y1z8g/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbzpUfQ8JKSKfMFDmx77wgerNXOAdea1BII0L36czVSr1zhEEC2IXSOMPgoADUc8jDe9VQ/exec';
 
-// ========== GLOBAL STATE ==========
 let peopleData = [];
 let currentId = null;
-
-// ========== POPULATE DROPDOWNS ==========
-function populateDropdowns() {
-    const heightSelect = document.getElementById('editHeight');
-    for (let i = 160; i <= 180; i++) {
-        const opt = document.createElement('option');
-        opt.value = i;
-        opt.textContent = i;
-        heightSelect.appendChild(opt);
-    }
-
-    const weightSelect = document.getElementById('editWeight');
-    for (let i = 45; i <= 120; i++) {
-        const opt = document.createElement('option');
-        opt.value = i;
-        opt.textContent = i;
-        weightSelect.appendChild(opt);
-    }
-
-    const lowerSelect = document.getElementById('editLowerSize');
-    for (let i = 28; i <= 44; i++) {
-        const opt = document.createElement('option');
-        opt.value = i;
-        opt.textContent = i;
-        lowerSelect.appendChild(opt);
-    }
-
-    ['editCutBoot', 'editHoleBoot', 'editPtShoe', 'editJungleShoe', 'editBeret'].forEach(id => {
-        const select = document.getElementById(id);
-        for (let i = 5; i <= 12; i++) {
-            const opt = document.createElement('option');
-            opt.value = i;
-            opt.textContent = i;
-            select.appendChild(opt);
-        }
-    });
-}
-populateDropdowns();
 
 // ========== API CALLS ==========
 async function callAPI() {
     try {
-        const url = new URL(API_URL);
-        url.searchParams.append('action', 'getAll');
-        
-        const response = await fetch(url.toString(), {
-            method: 'GET',
-            mode: 'cors'
-        });
+        const response = await fetch(API_URL, { method: 'GET', mode: 'cors' });
         const result = await response.json();
         return result;
     } catch (error) {
@@ -503,120 +320,291 @@ async function callAPI() {
         return { error: error.message };
     }
 }
+
 // ========== LOAD ALL DATA ==========
 async function loadAllData() {
-    const status = document.getElementById('syncStatus');
-    status.innerHTML = '⏳ ડેટા લોડ થઈ રહ્યો છે...';
-    
+    showStatus('⏳ ડેટા લોડ થઈ રહ્યો છે...', 'info');
     const result = await callAPI();
     if (Array.isArray(result)) {
         peopleData = result;
-        populateUniqueDropdown();
-        status.innerHTML = '✅ ' + peopleData.length + ' રેકોર્ડ્સ લોડ થયા';
-        return true;
+        showStatus('✅ ' + peopleData.length + ' રેકોર્ડ્સ લોડ થયા', 'success');
+        setTimeout(() => hideStatus(), 2000);
     } else {
-        status.innerHTML = '❌ ભૂલ: ' + (result.error || 'Unknown error');
-        return false;
+        showStatus('❌ ડેટા લોડ કરવામાં ભૂલ: ' + (result.error || 'Unknown error'), 'error');
     }
 }
 
-// ========== POPULATE UNIQUE DROPDOWN ==========
-function populateUniqueDropdown() {
-    const select = document.getElementById('uniqueNo');
-    select.innerHTML = '<option value="">-- પસંદ કરો --</option>';
-    peopleData.forEach(p => {
-        const option = document.createElement('option');
-        option.value = p.ID;
-        option.textContent = p.ID + ' - ' + p.NAME;
-        select.appendChild(option);
-    });
-}
-
-// ========== LOAD SINGLE RECORD ==========
-function loadData() {
-    const id = document.getElementById('uniqueNo').value;
-    if (!id) return;
-    currentId = id;
+// ========== SEARCH PERSON ==========
+function searchPerson() {
+    const query = document.getElementById('searchInput').value.trim();
     
-    const person = peopleData.find(p => String(p.ID) === String(id));
-    if (!person) {
-        showStatus('❌ આ ID મળી નહીં!', 'error');
+    if (!query) {
+        showStatus('❌ કૃપા કરીને બકલ નંબર નાખો!', 'error');
         return;
     }
     
-    displayPerson(person);
-}
-
-function displayPerson(person) {
-    document.getElementById('displayId').textContent = person.ID || '-';
-    document.getElementById('displayRank').textContent = person.RANK || '-';
-    document.getElementById('displayName').textContent = person.NAME || '-';
-    document.getElementById('displayHeight').textContent = person.HEIGHT || '-';
-    document.getElementById('displayWeight').textContent = person.WEIGHT || '-';
-    document.getElementById('displayDob').textContent = person.DOB || '-';
-    document.getElementById('displayCutBoot').textContent = person.CUTBOOT || '-';
-    document.getElementById('displayHoleBoot').textContent = person.HOLEBOOT || '-';
-    document.getElementById('displayPtShoe').textContent = person.PTSHOE || '-';
-    document.getElementById('displayJungleShoe').textContent = person.JUNGLESHOE || '-';
-    document.getElementById('displayTShirt').textContent = person.TSHIRT || '-';
-    document.getElementById('displayLowerSize').textContent = person.LOWERSIZE || '-';
-    document.getElementById('displayBeret').textContent = person.BERET || '-';
-    document.getElementById('displayRaincoat').textContent = person.RAINCOAT || '-';
-    document.getElementById('displayWarmCoat').textContent = person.WARMCOAT || '-';
-    document.getElementById('displayWarmJacket').textContent = person.WARMJACKET || '-';
-    document.getElementById('displayFiring').textContent = person.FIRING || '-';
-    document.getElementById('displayMedical').textContent = person.MEDICAL || '-';
-    document.getElementById('displayBlood').textContent = person.BLOOD || '-';
-    document.getElementById('displayVoterId').textContent = person.VOTERID || '-';
-
-    document.getElementById('editRank').value = person.RANK || 'PI';
-    document.getElementById('editName').value = person.NAME || '';
-    document.getElementById('editHeight').value = person.HEIGHT || 160;
-    document.getElementById('editWeight').value = person.WEIGHT || 45;
-    document.getElementById('editDob').value = person.DOB || '';
-    document.getElementById('editCutBoot').value = person.CUTBOOT || '5';
-    document.getElementById('editHoleBoot').value = person.HOLEBOOT || '5';
-    document.getElementById('editPtShoe').value = person.PTSHOE || '5';
-    document.getElementById('editJungleShoe').value = person.JUNGLESHOE || '5';
-    document.getElementById('editTShirt').value = person.TSHIRT || 'M';
-    document.getElementById('editLowerSize').value = person.LOWERSIZE || 32;
-    document.getElementById('editBeret').value = person.BERET || '5';
-    document.getElementById('editRaincoat').value = person.RAINCOAT || 'M';
-    document.getElementById('editWarmCoat').value = person.WARMCOAT || 'M';
-    document.getElementById('editWarmJacket').value = person.WARMJACKET || 'M';
-    document.getElementById('editFiring').value = person.FIRING || 'ના';
-    document.getElementById('editMedical').value = person.MEDICAL || 'ના';
-    document.getElementById('editBlood').value = person.BLOOD || 'A+';
-    document.getElementById('editVoterId').value = person.VOTERID || '';
-}
-
-// ========== REFRESH DATA ==========
-async function refreshData() {
-    await loadAllData();
-    if (currentId) {
-        document.getElementById('uniqueNo').value = currentId;
-        loadData();
+    // ID થી શોધો
+    const person = peopleData.find(p => String(p.ID) === String(query));
+    
+    if (!person) {
+        showStatus('❌ બકલ નંબર ' + query + ' મળ્યો નહીં!', 'error');
+        showEmptyState('❌', 'બકલ નંબર મળ્યો નહીં', 'બીજો બકલ નંબર ટ્રાય કરો');
+        return;
     }
+    
+    currentId = person.ID;
+    showStatus('✅ બકલ નંબર ' + query + ' નો ડેટા મળ્યો!', 'success');
+    showDetailView(person);
+}
+
+// ========== SHOW DETAIL VIEW ==========
+function showDetailView(person) {
+    const container = document.getElementById('detailContainer');
+    const initial = (person.NAME || '?').charAt(0).toUpperCase();
+    
+    container.innerHTML = `
+        <div class="detail-card" id="detailCard">
+            <div class="detail-header">
+                <div class="detail-avatar">${initial}</div>
+                <div class="detail-header-info">
+                    <h2>${person.NAME || 'નામ નથી'}</h2>
+                    <div class="badges">
+                        <span class="badge badge-rank">${person.RANK || '-'}</span>
+                        <span class="badge badge-id">બકલ નંબર: ${person.ID || '-'}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-grid" id="detailGrid">
+                <div class="detail-field">
+                    <div class="field-label">📏 ઊંચાઈ</div>
+                    <div class="field-value">${person.HEIGHT || '-'} cm</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">⚖️ વજન</div>
+                    <div class="field-value">${person.WEIGHT || '-'} kg</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">🎂 જન્મ તારીખ</div>
+                    <div class="field-value">${person.DOB || '-'}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">👞 કટ બૂટ</div>
+                    <div class="field-value">${person.CUTBOOT || '-'}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">🥾 હોલ બૂટ</div>
+                    <div class="field-value">${person.HOLEBOOT || '-'}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">👟 પીટી શૂઝ</div>
+                    <div class="field-value">${person.PTSHOE || '-'}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">🌿 જંગલ શૂઝ</div>
+                    <div class="field-value">${person.JUNGLESHOE || '-'}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">👕 ટી-શર્ટ</div>
+                    <div class="field-value">${person.TSHIRT || '-'}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">👖 લોઅર સાઈઝ</div>
+                    <div class="field-value">${person.LOWERSIZE || '-'}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">🎖️ બેરેટ કેપ</div>
+                    <div class="field-value">${person.BERET || '-'}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">🧥 રેઈનકોટ</div>
+                    <div class="field-value">${person.RAINCOAT || '-'}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">🧥 ગરમ કોટ</div>
+                    <div class="field-value">${person.WARMCOAT || '-'}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">🧣 ગરમ જરશી</div>
+                    <div class="field-value">${person.WARMJACKET || '-'}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">🔫 ફાયરીંગ</div>
+                    <div class="field-value">${person.FIRING || '-'}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">🏥 મેડીકલ</div>
+                    <div class="field-value">${person.MEDICAL || '-'}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="field-label">🩸 બ્લડ ગ્રુપ</div>
+                    <div class="field-value">${person.BLOOD || '-'}</div>
+                </div>
+                <div class="detail-field full">
+                    <div class="field-label">🪪 ચૂંટણી કાર્ડ નંબર</div>
+                    <div class="field-value">${person.VOTERID || '-'}</div>
+                </div>
+            </div>
+            
+            <div class="detail-actions">
+                <button class="btn-warning" onclick="showEditForm()">✏️ એડિટ કરો</button>
+                <button class="btn-success" onclick="resetSearch()">✅ બંધ કરો</button>
+            </div>
+        </div>
+    `;
+}
+
+// ========== SHOW EDIT FORM ==========
+function showEditForm() {
+    const person = peopleData.find(p => String(p.ID) === String(currentId));
+    if (!person) return;
+    
+    const container = document.getElementById('detailContainer');
+    const initial = (person.NAME || '?').charAt(0).toUpperCase();
+    
+    container.innerHTML = `
+        <div class="detail-card">
+            <div class="detail-header">
+                <div class="detail-avatar">${initial}</div>
+                <div class="detail-header-info">
+                    <h2>✏️ એડિટ કરો</h2>
+                    <div class="badges">
+                        <span class="badge badge-id">બકલ નંબર: ${person.ID}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="edit-form active">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>👤 હોદ્દો</label>
+                        <select id="editRank">
+                            <option value="PI" ${person.RANK==='PI'?'selected':''}>PI</option>
+                            <option value="PSI" ${person.RANK==='PSI'?'selected':''}>PSI</option>
+                            <option value="ASI" ${person.RANK==='ASI'?'selected':''}>ASI</option>
+                            <option value="APC" ${person.RANK==='APC'?'selected':''}>APC</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>👤 નામ</label>
+                        <input type="text" id="editName" value="${person.NAME || ''}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>📏 ઊંચાઈ (cm)</label>
+                        <input type="number" id="editHeight" value="${person.HEIGHT || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>⚖️ વજન (kg)</label>
+                        <input type="number" id="editWeight" value="${person.WEIGHT || ''}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>🎂 જન્મ તારીખ</label>
+                    <input type="date" id="editDob" value="${person.DOB || ''}">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>👞 કટ બૂટ</label>
+                        <input type="text" id="editCutBoot" value="${person.CUTBOOT || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>🥾 હોલ બૂટ</label>
+                        <input type="text" id="editHoleBoot" value="${person.HOLEBOOT || ''}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>👟 પીટી શૂઝ</label>
+                        <input type="text" id="editPtShoe" value="${person.PTSHOE || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>🌿 જંગલ શૂઝ</label>
+                        <input type="text" id="editJungleShoe" value="${person.JUNGLESHOE || ''}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>👕 ટી-શર્ટ</label>
+                        <input type="text" id="editTShirt" value="${person.TSHIRT || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>👖 લોઅર સાઈઝ</label>
+                        <input type="text" id="editLowerSize" value="${person.LOWERSIZE || ''}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>🎖️ બેરેટ કેપ</label>
+                        <input type="text" id="editBeret" value="${person.BERET || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>🧥 રેઈનકોટ</label>
+                        <input type="text" id="editRaincoat" value="${person.RAINCOAT || ''}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>🧥 ગરમ કોટ</label>
+                        <input type="text" id="editWarmCoat" value="${person.WARMCOAT || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>🧣 ગરમ જરશી</label>
+                        <input type="text" id="editWarmJacket" value="${person.WARMJACKET || ''}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>🔫 ફાયરીંગ</label>
+                        <select id="editFiring">
+                            <option value="હા" ${person.FIRING==='હા'?'selected':''}>હા</option>
+                            <option value="ના" ${person.FIRING==='ના'?'selected':''}>ના</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>🏥 મેડીકલ</label>
+                        <select id="editMedical">
+                            <option value="હા" ${person.MEDICAL==='હા'?'selected':''}>હા</option>
+                            <option value="ના" ${person.MEDICAL==='ના'?'selected':''}>ના</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>🩸 બ્લડ ગ્રુપ</label>
+                        <input type="text" id="editBlood" value="${person.BLOOD || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>🪪 ચૂંટણી કાર્ડ</label>
+                        <input type="text" id="editVoterId" value="${person.VOTERID || ''}">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-actions">
+                <button class="btn-success" onclick="saveData()">💾 સેવ કરો</button>
+                <button class="btn-warning" onclick="showDetailView(peopleData.find(p => String(p.ID) === String(currentId)))">❌ રદ્દ કરો</button>
+            </div>
+        </div>
+    `;
 }
 
 // ========== SAVE DATA ==========
 async function saveData() {
-    if (!currentId) {
-        showStatus('❌ કૃપા કરીને પહેલા બકલ નંબર પસંદ કરો!', 'error');
-        return;
-    }
-
+    if (!currentId) return;
+    
     const name = document.getElementById('editName').value.trim();
     if (!name) {
         showStatus('❌ કૃપા કરીને નામ ભરો!', 'error');
         return;
     }
-
+    
     const updates = {
         RANK: document.getElementById('editRank').value,
         NAME: name,
-        HEIGHT: parseInt(document.getElementById('editHeight').value),
-        WEIGHT: parseInt(document.getElementById('editWeight').value),
+        HEIGHT: document.getElementById('editHeight').value,
+        WEIGHT: document.getElementById('editWeight').value,
         DOB: document.getElementById('editDob').value,
         CUTBOOT: document.getElementById('editCutBoot').value,
         HOLEBOOT: document.getElementById('editHoleBoot').value,
@@ -631,61 +619,65 @@ async function saveData() {
         FIRING: document.getElementById('editFiring').value,
         MEDICAL: document.getElementById('editMedical').value,
         BLOOD: document.getElementById('editBlood').value,
-        VOTERID: document.getElementById('editVoterId').value.trim()  // ✅ ખાલી રહેવા દો
+        VOTERID: document.getElementById('editVoterId').value.trim()
     };
-
-    showStatus('⏳ Google Sheets માં સેવ થઈ રહ્યું છે...', 'loading');
-
+    
+    showStatus('⏳ સેવ થઈ રહ્યું છે...', 'info');
+    
     try {
         const response = await fetch(API_URL, {
             method: 'POST',
             mode: 'cors',
-            headers: {
-                'Content-Type': 'text/plain'
-            },
-            body: JSON.stringify({
-                id: currentId,
-                updates: updates
-            })
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ id: currentId, updates: updates })
         });
         
         const result = await response.json();
         
         if (result.success) {
             const person = peopleData.find(p => String(p.ID) === String(currentId));
-            if (person) {
-                Object.assign(person, updates);
-            }
+            if (person) Object.assign(person, updates);
             
-            displayPerson(person);
-            populateUniqueDropdown();
-            showStatus('✅ ડેટા Google Sheets માં સેવ થયો!', 'success');
-            document.getElementById('editSection').classList.remove('active');
+            showStatus('✅ ડેટા સેવ થયો!', 'success');
+            setTimeout(() => {
+                showDetailView(person);
+            }, 500);
         } else {
             showStatus('❌ સેવ કરવામાં ભૂલ: ' + (result.error || 'Unknown error'), 'error');
         }
     } catch (error) {
         showStatus('❌ નેટવર્ક ભૂલ: ' + error.message, 'error');
     }
-}// ========== EDIT FUNCTIONS ==========
-function enableEdit() {
-    if (!currentId) {
-        showStatus('❌ કૃપા કરીને પહેલા બકલ નંબર પસંદ કરો!', 'error');
-        return;
-    }
-    document.getElementById('editSection').classList.add('active');
 }
 
-function cancelEdit() {
-    document.getElementById('editSection').classList.remove('active');
-    document.getElementById('statusMessage').className = 'status';
-    document.getElementById('statusMessage').textContent = '';
+// ========== RESET SEARCH ==========
+function resetSearch() {
+    document.getElementById('searchInput').value = '';
+    currentId = null;
+    hideStatus();
+    showEmptyState('🔍', 'બકલ નંબર નાખો', 'ઉપર બોક્સમાં બકલ નંબર નાખીને શોધો બટન દબાવો');
+    document.getElementById('searchInput').focus();
 }
 
+// ========== EMPTY STATE ==========
+function showEmptyState(icon, title, message) {
+    document.getElementById('detailContainer').innerHTML = `
+        <div class="empty-state">
+            <div class="icon">${icon}</div>
+            <h3>${title}</h3>
+            <p>${message}</p>
+        </div>
+    `;
+}
+
+// ========== STATUS ==========
 function showStatus(msg, type) {
-    const status = document.getElementById('statusMessage');
+    const status = document.getElementById('statusMsg');
     status.textContent = msg;
     status.className = 'status ' + type;
+}
+function hideStatus() {
+    document.getElementById('statusMsg').className = 'status';
 }
 
 // ========== INIT ==========
@@ -693,8 +685,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     await loadAllData();
 });
 
-document.getElementById('uniqueNo').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') loadData();
+// Enter કી
+document.getElementById('searchInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') searchPerson();
 });
 </script>
 </body>
