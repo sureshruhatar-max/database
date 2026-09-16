@@ -462,6 +462,56 @@ function showEditForm() {
     const container = document.getElementById('detailContainer');
     const initial = (person.NAME || '?').charAt(0).toUpperCase();
     
+    // ========== ઊંચાઈ ડ્રૉપડાઉન (160-185) ==========
+    let heightOptions = '<option value="">-- પસંદ કરો --</option>';
+    for (let i = 160; i <= 185; i++) {
+        const selected = String(person.HEIGHT) === String(i) ? 'selected' : '';
+        heightOptions += `<option value="${i}" ${selected}>${i}</option>`;
+    }
+    
+    // ========== વજન ડ્રૉપડાઉન (45-120) ==========
+    let weightOptions = '<option value="">-- પસંદ કરો --</option>';
+    for (let i = 45; i <= 120; i++) {
+        const selected = String(person.WEIGHT) === String(i) ? 'selected' : '';
+        weightOptions += `<option value="${i}" ${selected}>${i}</option>`;
+    }
+    
+    // ========== બૂટ સાઈઝ ડ્રૉપડાઉન (6-12) ==========
+    function bootOptions(selectedValue) {
+        let opts = '<option value="">-- પસંદ કરો --</option>';
+        for (let i = 6; i <= 12; i++) {
+            const selected = String(selectedValue) === String(i) ? 'selected' : '';
+            opts += `<option value="${i}" ${selected}>${i}</option>`;
+        }
+        return opts;
+    }
+    
+    // ========== બેરેટ કેપ ડ્રૉપડાઉન (6-10) ==========
+    let beretOptions = '<option value="">-- પસંદ કરો --</option>';
+    for (let i = 6; i <= 10; i++) {
+        const selected = String(person.BERET) === String(i) ? 'selected' : '';
+        beretOptions += `<option value="${i}" ${selected}>${i}</option>`;
+    }
+    
+    // ========== કપડાં સાઈઝ ડ્રૉપડાઉન (M-XXL) ==========
+    const clothSizes = ['M', 'L', 'XL', 'XXL'];
+    function clothOptions(selectedValue) {
+        let opts = '<option value="">-- પસંદ કરો --</option>';
+        clothSizes.forEach(size => {
+            const selected = String(selectedValue) === size ? 'selected' : '';
+            opts += `<option value="${size}" ${selected}>${size}</option>`;
+        });
+        return opts;
+    }
+    
+    // ========== બ્લડ ગ્રુપ ડ્રૉપડાઉન ==========
+    const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+    let bloodOptions = '<option value="">-- પસંદ કરો --</option>';
+    bloodGroups.forEach(bg => {
+        const selected = String(person.BLOOD) === bg ? 'selected' : '';
+        bloodOptions += `<option value="${bg}" ${selected}>${bg}</option>`;
+    });
+    
     container.innerHTML = `
         <div class="detail-card">
             <div class="detail-header">
@@ -490,70 +540,78 @@ function showEditForm() {
                         <input type="text" id="editName" value="${person.NAME || ''}">
                     </div>
                 </div>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label>📏 ઊંચાઈ (cm)</label>
-                        <input type="number" id="editHeight" value="${person.HEIGHT || ''}">
+                        <select id="editHeight">${heightOptions}</select>
                     </div>
                     <div class="form-group">
                         <label>⚖️ વજન (kg)</label>
-                        <input type="number" id="editWeight" value="${person.WEIGHT || ''}">
+                        <select id="editWeight">${weightOptions}</select>
                     </div>
                 </div>
+                
                 <div class="form-group">
                     <label>🎂 જન્મ તારીખ</label>
                     <input type="date" id="editDob" value="${person.DOB || ''}">
                 </div>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label>👞 કટ બૂટ</label>
-                        <input type="text" id="editCutBoot" value="${person.CUTBOOT || ''}">
+                        <select id="editCutBoot">${bootOptions(person.CUTBOOT)}</select>
                     </div>
                     <div class="form-group">
                         <label>🥾 હોલ બૂટ</label>
-                        <input type="text" id="editHoleBoot" value="${person.HOLEBOOT || ''}">
+                        <select id="editHoleBoot">${bootOptions(person.HOLEBOOT)}</select>
                     </div>
                 </div>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label>👟 પીટી શૂઝ</label>
-                        <input type="text" id="editPtShoe" value="${person.PTSHOE || ''}">
+                        <select id="editPtShoe">${bootOptions(person.PTSHOE)}</select>
                     </div>
                     <div class="form-group">
                         <label>🌿 જંગલ શૂઝ</label>
-                        <input type="text" id="editJungleShoe" value="${person.JUNGLESHOE || ''}">
+                        <select id="editJungleShoe">${bootOptions(person.JUNGLESHOE)}</select>
                     </div>
                 </div>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label>👕 ટી-શર્ટ</label>
-                        <input type="text" id="editTShirt" value="${person.TSHIRT || ''}">
+                        <select id="editTShirt">${clothOptions(person.TSHIRT)}</select>
                     </div>
                     <div class="form-group">
                         <label>👖 લોઅર સાઈઝ</label>
-                        <input type="text" id="editLowerSize" value="${person.LOWERSIZE || ''}">
+                        <select id="editLowerSize">${clothOptions(person.LOWERSIZE)}</select>
                     </div>
                 </div>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label>🎖️ બેરેટ કેપ</label>
-                        <input type="text" id="editBeret" value="${person.BERET || ''}">
+                        <select id="editBeret">${beretOptions}</select>
                     </div>
                     <div class="form-group">
                         <label>🧥 રેઈનકોટ</label>
-                        <input type="text" id="editRaincoat" value="${person.RAINCOAT || ''}">
+                        <select id="editRaincoat">${clothOptions(person.RAINCOAT)}</select>
                     </div>
                 </div>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label>🧥 ગરમ કોટ</label>
-                        <input type="text" id="editWarmCoat" value="${person.WARMCOAT || ''}">
+                        <select id="editWarmCoat">${clothOptions(person.WARMCOAT)}</select>
                     </div>
                     <div class="form-group">
                         <label>🧣 ગરમ જરશી</label>
-                        <input type="text" id="editWarmJacket" value="${person.WARMJACKET || ''}">
+                        <select id="editWarmJacket">${clothOptions(person.WARMJACKET)}</select>
                     </div>
                 </div>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label>🔫 ફાયરીંગ</label>
@@ -570,10 +628,11 @@ function showEditForm() {
                         </select>
                     </div>
                 </div>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label>🩸 બ્લડ ગ્રુપ</label>
-                        <input type="text" id="editBlood" value="${person.BLOOD || ''}">
+                        <select id="editBlood">${bloodOptions}</select>
                     </div>
                     <div class="form-group">
                         <label>🪪 ચૂંટણી કાર્ડ</label>
@@ -589,7 +648,6 @@ function showEditForm() {
         </div>
     `;
 }
-
 // ========== SAVE DATA ==========
 async function saveData() {
     if (!currentId) return;
