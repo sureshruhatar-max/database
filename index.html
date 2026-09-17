@@ -386,7 +386,7 @@ function showDetailView(person) {
                 </div>
                 <div class="detail-field">
                     <div class="field-label">🎂 જન્મ તારીખ</div>
-                    <div class="field-value">${person.DOB || '-'}</div>
+                    <div class="field-value">${formatDate(person.DOB)}</div>
                 </div>
                 <div class="detail-field">
                     <div class="field-label">👞 કટ બૂટ</div>
@@ -529,11 +529,14 @@ function showEditForm() {
                     <div class="form-group">
                         <label>👤 હોદ્દો</label>
                         <select id="editRank">
-                            <option value="PI" ${person.RANK==='PI'?'selected':''}>PI</option>
-                            <option value="PSI" ${person.RANK==='PSI'?'selected':''}>PSI</option>
-                            <option value="ASI" ${person.RANK==='ASI'?'selected':''}>ASI</option>
-                            <option value="APC" ${person.RANK==='APC'?'selected':''}>APC</option>
-                        </select>
+    <option value="">-- પસંદ કરો --</option>
+    <option value="PI" ${person.RANK==='PI'?'selected':''}>PI</option>
+    <option value="PSI" ${person.RANK==='PSI'?'selected':''}>PSI</option>
+    <option value="ASI" ${person.RANK==='ASI'?'selected':''}>ASI</option>
+<option value="AHC" ${person.RANK==='AHC'?'selected':''}>AHC</option>
+ <option value="APC" ${person.RANK==='APC'?'selected':''}>APC</option>
+    
+</select>
                     </div>
                     <div class="form-group">
                         <label>👤 નામ</label>
@@ -747,6 +750,22 @@ document.addEventListener('DOMContentLoaded', async function() {
 document.getElementById('searchInput').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') searchPerson();
 });
+// ========== DATE FORMAT ==========
+function formatDate(dateStr) {
+    if (!dateStr) return '-';
+    
+    // જો ISO format હોય (1993-03-31T18:30:00.000Z)
+    if (dateStr.includes('T')) {
+        const date = new Date(dateStr);
+        // ભારતીય ફોર્મેટમાં (DD/MM/YYYY)
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return day + '/' + month + '/' + year;
+    }
+    
+    return dateStr;
+}
 </script>
 </body>
 </html>
