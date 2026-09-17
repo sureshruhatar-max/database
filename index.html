@@ -273,6 +273,38 @@
             .detail-field .field-value { font-size: 15px; }
             .edit-form .form-row { grid-template-columns: 1fr; }
         }
+/* ========== સેવ સ્ટેટસ ========== */
+.save-status {
+    display: none;
+    text-align: center;
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    animation: pulse 1.5s infinite;
+}
+.save-status.loading {
+    display: block;
+    background: #bee3f8;
+    color: #2a69ac;
+}
+.save-status.success {
+    display: block;
+    background: #c6f6d5;
+    color: #22543d;
+    animation: none;
+}
+.save-status.error {
+    display: block;
+    background: #fed7d7;
+    color: #742a2a;
+    animation: none;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
     </style>
 </head>
 <body>
@@ -450,6 +482,7 @@ function showDetailView(person) {
                 <button class="btn-warning" onclick="showEditForm()">✏️ એડિટ કરો</button>
                 <button class="btn-success" onclick="resetSearch()">✅ બંધ કરો</button>
             </div>
+<div id="saveStatus" class="save-status"></div>
         </div>
     `;
 }
@@ -657,7 +690,7 @@ async function saveData() {
     
     const name = document.getElementById('editName').value.trim();
     if (!name) {
-        showStatus('❌ કૃપા કરીને નામ ભરો!', 'error');
+        showSaveStatus('❌ કૃપા કરીને નામ ભરો!', 'error');
         return;
     }
     
@@ -683,7 +716,15 @@ async function saveData() {
         VOTERID: document.getElementById('editVoterId').value.trim()
     };
     
-    showStatus('⏳ સેવ થઈ રહ્યું છે...', 'info');
+    // ⏳ સેવ થઈ રહ્યું છે...
+    showSaveStatus('⏳ તમારી માહિતી સેવ થઈ રહી છે...', 'loading');
+    
+    // Save બટન ડિસેબલ કરો
+    const saveBtn = document.querySelector('.btn-success');
+    if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.textContent = '⏳ સેવ થઈ રહ્યું છે...';
+    }
     
     try {
         const response = await fetch(API_URL, {
@@ -699,18 +740,38 @@ async function saveData() {
             const person = peopleData.find(p => String(p.ID) === String(currentId));
             if (person) Object.assign(person, updates);
             
-            showStatus('✅ ડેટા સેવ થયો!', 'success');
+            // ✅ સફળ
+            showSaveStatus('✅ તમારી માહિતી સફળતાપૂર્વક સેવ થઈ ગઈ!', 'success');
+            
             setTimeout(() => {
                 showDetailView(person);
-            }, 500);
+            }, 1500);
         } else {
-            showStatus('❌ સેવ કરવામાં ભૂલ: ' + (result.error || 'Unknown error'), 'error');
+            showSaveStatus('❌ સેવ કરવામાં ભૂલ: ' + (result.error || 'Unknown error'), 'error');
+            
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.textContent = '💾 સેવ કરો';
+            }
         }
     } catch (error) {
-        showStatus('❌ નેટવર્ક ભૂલ: ' + error.message, 'error');
+        showSaveStatus('❌ નેટવર્ક ભૂલ: ' + error.message, 'error');
+        
+        if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.textContent = '💾 સેવ કરો';
+        }
     }
 }
 
+// ========== સેવ સ્ટેટસ દેખાડો ==========
+function showSaveStatus(msg, type) {
+    const status = document.getElementById('saveStatus');
+    if (!status) return;
+    
+    status.textContent = msg;
+    status.className = 'save-status ' + type;
+}
 // ========== RESET SEARCH ==========
 function resetSearch() {
     document.getElementById('searchInput').value = '';
