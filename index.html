@@ -590,7 +590,7 @@ function showEditForm() {
                 
                 <div class="form-group">
                     <label>🎂 જન્મ તારીખ</label>
-                    <input type="date" id="editDob" value="${person.DOB || ''}">
+                    <input type="date" id="editDob" value="${(person.DOB || '').split('T')[0]}">
                 </div>
                 
                 <div class="form-row">
@@ -672,7 +672,7 @@ function showEditForm() {
                     </div>
                     <div class="form-group">
                         <label>🪪 ચૂંટણી કાર્ડ</label>
-                        <input type="text" id="editVoterId" value="${person.VOTERID || ''}">
+                        <input type="text" id="editVoterId" value="${person.VOTERID || person.VOTER_ID || ''}">
                     </div>
                 </div>
             </div>
