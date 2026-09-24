@@ -812,21 +812,21 @@ document.getElementById('searchInput').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') searchPerson();
 });
 // ========== DATE FORMAT ==========
+// ========== DATE FORMAT ==========
 function formatDate(dateStr) {
     if (!dateStr) return '-';
     
-    // જો ISO format હોય (1993-03-31T18:30:00.000Z)
+    // ISO format હોય તો (1993-04-01T00:00:00.000Z)
     if (dateStr.includes('T')) {
-        const date = new Date(dateStr);
-        // ભારતીય ફોર્મેટમાં (DD/MM/YYYY)
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return day + '/' + month + '/' + year;
+        const datePart = dateStr.split('T')[0];   // "1993-04-01"
+        const parts = datePart.split('-');        // ["1993", "04", "01"]
+        if (parts.length === 3) {
+            return parts[2] + '/' + parts[1] + '/' + parts[0];  // "01/04/1993"
+        }
     }
     
+    // પહેલેથી DD/MM/YYYY હોય તો તેમ જ પાછું આપો
     return dateStr;
-}
-</script>
+}</script>
 </body>
 </html>
